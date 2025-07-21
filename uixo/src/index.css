@@ -4,48 +4,54 @@
 
 :root {
   --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --foreground: hsl(225, 95%, 18%);
+  --muted: hsl(220, 13%, 91%);
+  --muted-foreground: hsl(220, 9%, 46%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --popover-foreground: hsl(225, 95%, 18%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
+  --card-foreground: hsl(225, 95%, 18%);
+  --border: hsl(220, 13%, 91%);
+  --input: hsl(220, 13%, 91%);
+  --primary: hsl(225, 95%, 18%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(220, 13%, 91%);
+  --secondary-foreground: hsl(225, 95%, 18%);
+  --accent: hsl(195, 100%, 50%);
+  --accent-foreground: hsl(225, 95%, 18%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(225, 95%, 18%);
   --radius: 0.5rem;
+  
+  /* UIXO Brand Colors */
+  --uixo-primary: hsl(225, 95%, 18%);
+  --uixo-accent: hsl(195, 100%, 50%);
+  --uixo-secondary: hsl(207, 90%, 35%);
+  --uixo-light: hsl(210, 17%, 82%);
+  --uixo-hover: hsl(217, 95%, 30%);
 }
 
 .dark {
-  --background: hsl(240, 10%, 3.9%);
+  --background: hsl(225, 95%, 4%);
   --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
+  --muted: hsl(225, 95%, 15%);
+  --muted-foreground: hsl(225, 5%, 65%);
+  --popover: hsl(225, 95%, 4%);
   --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
+  --card: hsl(225, 95%, 4%);
   --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
+  --border: hsl(225, 95%, 15%);
+  --input: hsl(225, 95%, 15%);
+  --primary: hsl(195, 100%, 50%);
+  --primary-foreground: hsl(225, 95%, 18%);
+  --secondary: hsl(225, 95%, 15%);
   --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
+  --accent: hsl(225, 95%, 15%);
   --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive: hsl(0, 63%, 31%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
-  --radius: 0.5rem;
+  --ring: hsl(225, 5%, 84%);
 }
 
 @layer base {
@@ -58,20 +64,152 @@
   }
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+/* Custom styles for UIXO */
+.uixo-gradient {
+  background: linear-gradient(135deg, hsl(225, 95%, 18%) 0%, hsl(207, 90%, 35%) 50%, hsl(195, 100%, 50%) 100%);
+  position: relative;
 }
 
-@keyframes slideUp {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+.uixo-gradient-dark {
+  background: linear-gradient(135deg, hsl(210, 20%, 8%) 0%, hsl(220, 25%, 12%) 25%, hsl(210, 30%, 15%) 50%, hsl(225, 20%, 10%) 75%, hsl(210, 15%, 6%) 100%);
+  position: relative;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+.uixo-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
 }
 
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out;
+@keyframes shimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.code-output {
+  background-color: hsl(225, 95%, 8%);
+  color: hsl(220, 13%, 91%);
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  position: relative;
+  overflow: hidden;
+}
+
+.code-output::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(195, 100%, 50%), transparent);
+  animation: scan 2s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0%, 100% { opacity: 0; transform: translateX(-100%); }
+  50% { opacity: 1; transform: translateX(100%); }
+}
+
+.syntax-highlight {
+  /* Token colors for syntax highlighting */
+}
+
+.syntax-highlight .token.keyword {
+  color: hsl(195, 100%, 50%);
+}
+
+.syntax-highlight .token.string {
+  color: hsl(120, 100%, 70%);
+}
+
+.syntax-highlight .token.function {
+  color: hsl(60, 100%, 70%);
+}
+
+.syntax-highlight .token.comment {
+  color: hsl(220, 9%, 55%);
+}
+
+/* Enhanced animations for better UX */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0,0,0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-pulse-custom {
+  animation: pulse 2s infinite;
+}
+
+.animate-bounce-custom {
+  animation: bounce 2s infinite;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced focus styles */
+*:focus-visible {
+  outline: 2px solid hsl(195, 100%, 50%);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(0, 0%, 95%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(195, 100%, 50%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(195, 100%, 40%);
 }
