@@ -34,8 +34,8 @@ export function ThemeProvider({
 
     if (theme === "system") {
       resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+        ? "light"
+        : "dark";
     } else {
       resolvedTheme = theme;
     }
