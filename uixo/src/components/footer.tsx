@@ -1,5 +1,30 @@
+import { FaGithub, FaLinkedinIn, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
+
+    const socials = [
+    {
+        name: "Github",
+        url: "https://github.com/fikriaf",
+        icon: <FaGithub className="w-5 h-5" />,
+    },
+    {
+        name: "LinkedIn",
+        url: "https://www.linkedin.com/in/fikri-armia-fahmi-b373b3288",
+        icon: <FaLinkedinIn className="w-5 h-5" />,
+    },
+    {
+        name: "Instagram",
+        url: "https://instagram.com/fikriaf27",
+        icon: <FaInstagram className="w-5 h-5" />,
+    },
+    {
+        name: "whatsapp",
+        url: "https://wa.me/62895348505284",
+        icon: <FaWhatsapp className="w-5 h-5" />,
+    },
+    ];
+
 return (
     <footer className="bg-white dark:bg-gray-950 ">
     <div className="container mx-auto px-4 py-12">
@@ -18,13 +43,16 @@ return (
             Membawa visi digital Anda menjadi kenyataan dengan solusi inovatif dan desain yang menakjubkan. Kami berkomitmen untuk memberikan pengalaman terbaik bagi pengguna Anda.
             </p>
             <div className="flex space-x-4">
-            {['twitter', 'facebook', 'instagram', 'linkedin'].map((social) => ( <a 
-                key={social}
-                href="#" 
+            {socials.map((social) => (
+                <a
+                key={social.name}
+                href={social.url}
                 className="bg-gray-800 hover:bg-gray-700 transition-colors duration-300 p-2 rounded-full"
-                aria-label={social}
+                aria-label={social.name}
+                target="_blank"
+                rel="noopener noreferrer"
                 >
-                <div className="w-5 h-5 bg-gray-400 rounded-full"></div>
+                {social.icon}
                 </a>
             ))}
             </div>
