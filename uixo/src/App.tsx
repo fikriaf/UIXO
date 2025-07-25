@@ -11,6 +11,7 @@ import Generator from "./pages/generator";
 import NotFound from "@/pages/not-found";
 import AssistantButton from "./components/AssistantButton";
 import Testing from "./components/Testing";
+import { Analytics } from "@vercel/analytics/next"
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="system">
         <TooltipProvider>
           <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+            <Analytics />
             <AssistantButton />
             <Navigation />
             <Router />
