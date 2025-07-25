@@ -17,7 +17,7 @@ export default function AbstractBackground() {
       </div>
 
       {/* Digital rain effect */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-10">
+      {/* <div className="absolute inset-0 opacity-5 dark:opacity-10">
         {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={i}
@@ -36,7 +36,7 @@ export default function AbstractBackground() {
             }}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
