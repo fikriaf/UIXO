@@ -26,7 +26,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light" storageKey="system">
+      <ThemeProvider defaultTheme="dark" storageKey="system">
         <TooltipProvider>
           <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <AssistantButton />
