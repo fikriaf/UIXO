@@ -1,8 +1,9 @@
 <p align="center">
   <h1 align="center">UIXO</h1>
-  <img src="https://your-image-url-here.com/logo.png" alt="UIXO Logo" width="200" />
 </p>
-
+<p align="center">
+  <img align="center" src="https://github.com/fikriaf/UIXO/blob/main/logo-nobg.png?raw=true" alt="UIXO Logo" width="200" />
+</p>
 <p align="center">
   <a href="https://your-app-link.com">
     <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="Build Status" />
@@ -21,10 +22,10 @@
 </p>
 
 <p align="center">
-  <a href="https://your-app-link.com">
+  <a href="https://uixo.vercel.app/">
     <strong>👉 Try Now</strong>
   </a> • 
-  <a href="https://your-docs-link.com">
+  <a href="https://uixo.vercel.app/">
     <strong>📖 Learn More</strong>
   </a>
 </p>
