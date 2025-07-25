@@ -65,7 +65,7 @@ export default function Generator() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          data: [prompt, '', null],
+          data: [`${prompt}. HARUS pakai bahasa ${language}.`, '', null],
           event_data: null,
           fn_index: 19,
           trigger_id: 18,
