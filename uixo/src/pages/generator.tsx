@@ -11,7 +11,7 @@ import LoadingOverlay from "../components/loading-overlay";
 import CodeOutput from "../components/code-output";
 import AbstractBackground from "../components/abstract-background";
 import { startStreaming } from "@/services/getStream";
-import CoolBg from "@/components/coolBG";
+// import CoolBg from "@/components/coolBG";
 
 // interface GenerateRequest {
 //   prompt: string;
@@ -128,7 +128,7 @@ export default function Generator() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
       <AbstractBackground />
-      <CoolBg />
+      {/* <CoolBg /> */}
       <LoadingOverlay
         isVisible={isLoading}
         message="Generating your component..."
