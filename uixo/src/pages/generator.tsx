@@ -11,56 +11,93 @@ import { motion, AnimatePresence, easeOut } from "framer-motion";
 import LoadingOverlay from "../components/loading-overlay";
 import CodeOutput from "../components/code-output";
 import AbstractBackground from "../components/abstract-background";
+import { startStreaming } from "@/services/getStream";
 
-interface GenerateRequest {
-  prompt: string;
-  language: string;
-}
+// interface GenerateRequest {
+//   prompt: string;
+//   language: string;
+// }
 
-interface GenerateResponse {
-  code: string;
-  language: string;
+// interface GenerateResponse {
+//   code: string;
+//   language: string;
+// }
+function generateRandomHash(length = 12) {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
 }
 
 export default function Generator() {
   const [prompt, setPrompt] = useState("");
   const [language, setLanguage] = useState("tsx");
-  const [generatedCode, setGeneratedCode] = useState("");
+  // const [generatedCode, setGeneratedCode] = useState("");
   const [error, setError] = useState("");
   const { toast } = useToast();
+  const [streamedOutput, setStreamedOutput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const generateMutation = useMutation({
-    mutationFn: async (data: GenerateRequest): Promise<GenerateResponse> => {
-      const response = await apiRequest("POST", "/api/generate", data);
-      return await response.json();
-    },
-    onSuccess: (data) => {
-      setGeneratedCode(data.code);
-      setError("");
-      toast({
-        title: "Success!",
-        description: "Code generated successfully!",
+  const [ hash, setHash ] = useState("");
+  useEffect(() => {
+    const session_hash = generateRandomHash();
+    setHash(session_hash);
+  }, []);
+
+  const streamMutation = useMutation({
+    mutationFn: async (prompt: string) => {
+      setIsLoading(true);
+      setStreamedOutput("");
+
+      const hashnya = generateRandomHash();
+      console.log(hashnya)
+
+      // Step 1: POST
+      const res = await fetch("https://qwen-qwen3-coder-webdev.hf.space/gradio_api/queue/join?__theme=system", {
+        method: "POST",
+        headers: {
+            "Host": "https://qwen-qwen3-coder-webdev.hf.space",
+            "User-Agent": "Mozilla/5.0 (Linux; Android 11; Infinix X662 Build/RP1A.200720.011) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.7204.157 Mobile Safari/537.36",
+            "Origin": "https://qwen-qwen3-coder-webdev.hf.space",
+            "Referer": "https://qwen-qwen3-coder-webdev.hf.space/?__theme=system",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          data: [prompt, '', null],
+          event_data: null,
+          fn_index: 19,
+          trigger_id: 18,
+          session_hash: hashnya,
+        }),
+      });
+
+      if (!res.ok) throw new Error("POST failed");
+
+      await startStreaming(hashnya, (chunk, language) => {
+        setIsLoading(false);
+        setLanguage(language)
+        setStreamedOutput((prev) => prev + chunk);
       });
     },
     onError: () => {
       toast({
         title: "Error",
-        description: "Failed to generate code. Please try again.",
+        description: "Failed to stream code. Please try again.",
         variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Done!",
+        description: "Streaming finished.",
       });
     },
   });
 
-  const handleGenerate = () => {
-    if (!prompt.trim()) {
-      setError("Please enter a component description");
-      return;
-    }
-    setError("");
-    generateMutation.mutate({ prompt: prompt.trim(), language });
-  };
-
   const handleClear = () => {
+    setStreamedOutput("");
     setPrompt("");
     setError("");
   };
@@ -91,8 +128,8 @@ export default function Generator() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
       <AbstractBackground />
-      <LoadingOverlay 
-        isVisible={generateMutation.isPending}
+      <LoadingOverlay
+        isVisible={isLoading}
         message="Generating your component..."
       />
       
@@ -123,7 +160,7 @@ export default function Generator() {
         {/* Generator Interface - Made Much Wider */}
         <div className="grid xl:grid-cols-5 lg:grid-cols-3 gap-8">
           {/* Input Section - Smaller width */}
-          <motion.div className="xl:col-span-2 lg:col-span-1" variants={itemVariants}>
+          <motion.div className="xl:col-span-2 lg:col-span-1 w-full overflow-x-hidden" variants={itemVariants}>
             <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
@@ -136,16 +173,20 @@ export default function Generator() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                transition={{ delay: 0 }}
               >
                 <motion.div
                   whileFocus={{ scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  transition={{  ease: "easeInOut" }}
                 >
                   <Textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    className="min-h-[200px] resize-none transition-all duration-300 focus:ring-2 focus:ring-[hsl(195,100%,50%)] focus:border-[hsl(195,100%,50%)] hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-200 dark:border-gray-600 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+                    className="min-h-[200px] transition-all duration-100 w-full resize-none
+                                focus:outline-none focus:ring-0 focus:ring-transparent
+                                placeholder:font-normal placeholder:not-italic
+                                border-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                                placeholder:text-gray-500 dark:placeholder:text-gray-400"
                     placeholder="Buatkan form login dengan email dan password, gunakan styling modern dengan border radius dan shadow..."
                   />
                 </motion.div>
@@ -195,17 +236,17 @@ export default function Generator() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Button
-                    onClick={handleGenerate}
-                    disabled={generateMutation.isPending}
+                    onClick={() => streamMutation.mutate(prompt)}
+                    disabled={isLoading}
                     className="w-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl group bg-[hsl(225,95%,18%)] dark:bg-[hsl(195,100%,50%)] dark:text-[hsl(225,95%,18%)] hover:bg-[hsl(217,95%,30%)] dark:hover:bg-[hsl(195,100%,60%)]"
                   >
                     <motion.div
-                      animate={generateMutation.isPending ? { rotate: 360 } : {}}
-                      transition={{ duration: 1, repeat: generateMutation.isPending ? Infinity : 0, ease: "linear" }}
+                      animate={isLoading ? { rotate: 360 } : {}}
+                      transition={{ duration: 1, repeat: isLoading ? Infinity : 0, ease: "linear" }}
                     >
                       <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                     </motion.div>
-                    {generateMutation.isPending ? "Generating..." : "Generate"}
+                    {isLoading ? "Generating..." : "Generate"}
                   </Button>
                 </motion.div>
                 <motion.div
@@ -227,9 +268,9 @@ export default function Generator() {
           </motion.div>
 
           {/* Output Section - Wider width */}
-          <motion.div className="xl:col-span-3 lg:col-span-2" variants={itemVariants}>
+          <motion.div className="xl:col-span-3 lg:col-span-2 w-full overflow-x-hidden" variants={itemVariants}>
             <CodeOutput 
-              code={generatedCode}
+              code={streamedOutput}
               language={language}
               placeholder="// Click 'Generate' to see your component code here..."
             />

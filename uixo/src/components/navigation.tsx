@@ -1,19 +1,19 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-// import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Navigation() {
   const [location] = useLocation();
 
   return (
-    <motion.nav 
-      className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 transition-colors duration-300"
+    <motion.nav
+      className="relative nav-shimmer bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-colors duration-300"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 cursor-pointer">
@@ -56,10 +56,11 @@ export default function Navigation() {
                 </Button>
               </motion.div>
             </Link>
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
           </div>
         </div>
       </div>
+      
     </motion.nav>
   );
 }

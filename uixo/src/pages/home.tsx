@@ -1,8 +1,15 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Zap, Code, CheckCircle, ArrowRight } from "lucide-react";
+import { Zap, Code, CheckCircle, ArrowRight, BookOpenText , Cpu, Phone } from "lucide-react";
 import { motion, easeInOut, easeOut } from "framer-motion";
 import RotatingCoreWithOrbit from "@/components/RotatingCore";
+import { AnimationLayout } from "@/components/AnimationLayout";
+
+const menuItems = [
+  { icon: <BookOpenText size={20} />, label: "About Us", href: "#about" },
+  { icon: <Cpu size={20} />, label: "Technology", href: "#technology" },
+  { icon: <Phone size={20} />, label: "Contact", href: "#contact" },
+];
 
 export default function Home() {
   const containerVariants = {
@@ -39,9 +46,25 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <RotatingCoreWithOrbit />
+      
       {/* Hero Section */}
       <div className="relative uixo-gradient dark:uixo-gradient-dark overflow-hidden">
+        <div className="group fixed top-50 left-0 backdrop-blur-md shadow-lg text-white flex flex-col items-center hover:w-48 w-12 transition-all duration-300 z-20">
+          {menuItems.map((item, index) => (
+            <a
+              key={index}
+              href={item.href}
+              className="flex items-center gap-3 p-4 hover:bg-gray-700 w-full"
+            >
+              <span className="absolute left-0 p-3">{item.icon}</span>
+              <span className="whitespace-nowrap opacity-0 pl-6 group-hover:opacity-100 transition-opacity duration-300">
+                {item.label}
+              </span>
+            </a>
+          ))}
+        </div>
+        <AnimationLayout />
+        <RotatingCoreWithOrbit />
         <div className="absolute inset-0 bg-black opacity-10 dark:opacity-20"></div>
         <motion.div 
           className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28"
@@ -87,18 +110,19 @@ export default function Home() {
                       color: 'hsl(225, 95%, 18%)'
                     }}
                   >
-                    Try Now 
+                    Try Now
                     <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </motion.div>
               </Link>
               <motion.div
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
                 <Button 
                   variant="outline"
-                  className="border-2 border-white text-dark hover:bg-white hover:text-[hsl(225,95%,18%)] px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
+                  className="border-2 text-dark hover:bg-white hover:text-[hsl(225,95%,18%)] px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
                 >
                   Learn More
                 </Button>
@@ -107,10 +131,13 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
+      <div className="uixo-polygon"></div>
+      <div className="uixo-polygon-reflection"></div>
 
       {/* Features Section */}
-      <motion.div 
-        className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300"
+      <motion.div
+        id="about"
+        className="py-20 pt-10 dark:bg-gray-900 transition-colors duration-300"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -158,10 +185,10 @@ export default function Home() {
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="text-center p-6 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group cursor-pointer"
+                className="text-center p-6 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group cursor-pointer"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: feature.delay }}
+                transition={{ duration: 0, delay: 0 }}
                 whileHover={{ y: -8, scale: 1.02 }}
                 viewport={{ once: true }}
               >
@@ -184,6 +211,106 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
+
+      {/* Technology Section */}
+      <motion.section
+        id="technology"
+        className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Built with Cutting-edge Stack
+          </motion.h2>
+          <motion.p
+            className="text-lg text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            UIXO is crafted using modern technologies for optimal speed, flexibility, and maintainability.
+          </motion.p>
+
+          <div className="flex flex-wrap justify-center items-center gap-6 text-sm font-medium text-gray-700 dark:text-gray-200">
+            {[
+              { name: "React", icon: <Code className="w-5 h-5" /> },
+              { name: "TypeScript", icon: <Code className="w-5 h-5" /> },
+              { name: "Tailwind CSS", icon: <Zap className="w-5 h-5" /> },
+              { name: "Vite", icon: <Cpu className="w-5 h-5" /> },
+            ].map((tech, i) => (
+              <motion.div
+                key={i}
+                className="flex items-center gap-2 bg-white/70 dark:bg-gray-800/70 px-4 py-2 rounded-lg shadow-md"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15 }}
+              >
+                {tech.icon}
+                {tech.name}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Contact Section */}
+      <motion.section
+        id="contact"
+        className="py-20 bg-white dark:bg-gray-950 transition-colors duration-300"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Let’s Talk
+          </motion.h2>
+          <motion.p
+            className="text-lg text-gray-600 dark:text-gray-300 mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Have questions, feedback, or want to collaborate? Reach out and let’s connect.
+          </motion.p>
+
+          <form className="space-y-4">
+            <input
+              type="text"
+              placeholder="Your name"
+              className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:outline-none focus:ring-2 focus:ring-[hsl(195,100%,50%)] transition"
+            />
+            <input
+              type="email"
+              placeholder="Your email"
+              className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:outline-none focus:ring-2 focus:ring-[hsl(195,100%,50%)] transition"
+            />
+            <textarea
+              placeholder="Your message"
+              rows={4}
+              className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:outline-none focus:ring-2 focus:ring-[hsl(195,100%,50%)] transition"
+            />
+            <Button className="mt-4 bg-[hsl(195,100%,50%)] hover:bg-[hsl(195,100%,45%)] text-white px-6 py-3 rounded-xl font-semibold transition">
+              Send Message
+            </Button>
+          </form>
+        </div>
+      </motion.section>
+
     </div>
   );
 }

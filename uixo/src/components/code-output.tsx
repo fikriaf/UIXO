@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Copy, Download, Eye, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeOutputProps {
   code: string;
@@ -12,6 +14,16 @@ interface CodeOutputProps {
 }
 
 export default function CodeOutput({ code, language, placeholder }: CodeOutputProps) {
+
+  const outputRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [code]);
+
+
   const { toast } = useToast();
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -97,7 +109,7 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
   return (
     <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
             <Eye className="w-5 h-5 mr-2 text-[hsl(195,100%,50%)]" />
             Generated Code
@@ -118,6 +130,7 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
+                      transition={{ duration: 0.05 }}
                       className="flex items-center"
                     >
                       <Check className="w-4 h-4 mr-1 text-green-600" />
@@ -170,20 +183,24 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <motion.div 
-          className="rounded-lg p-4 min-h-[500px] overflow-auto code-output border"
+      <CardContent className="md:px-6 px-3">
+        <motion.div
+          ref={outputRef}
+          className="rounded-lg p-0 h-[500px] overflow-auto code-output border"
           style={{ 
             backgroundColor: 'hsl(225, 95%, 8%)',
             color: 'hsl(220, 13%, 91%)',
-            borderColor: 'hsl(225, 95%, 15%)'
+            borderColor: 'hsl(225, 95%, 15%)',
+            whiteSpace: "pre",
+            height: "500px",
+            overflow: "auto", 
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <pre className="text-sm font-mono whitespace-pre-wrap">
-            <AnimatePresence mode="wait">
+          {/* <pre className="text-sm font-mono"> */}
+            {/* <AnimatePresence mode="wait">
               <motion.code 
                 key={code ? 'code' : 'placeholder'}
                 className={`language-${language}`}
@@ -194,8 +211,30 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
               >
                 {code || placeholder || `// Click "Generate" to see your component code here...`}
               </motion.code>
-            </AnimatePresence>
-          </pre>
+            </AnimatePresence> */}
+            <SyntaxHighlighter
+              language={language}
+              style={oneDark}
+              showLineNumbers
+              wrapLines={false}
+              wrapLongLines={false}
+              customStyle={{
+                background: "transparent",
+                margin: 0,
+                padding: 0,
+                overflow: "visible",
+              }}
+              codeTagProps={{
+                style: {
+                  display: "inline-block",
+                  minWidth: "100%",
+                  whiteSpace: "pre",
+                  overflow: "visible",
+                },
+              }}
+            >
+              {code}
+            </SyntaxHighlighter>
         </motion.div>
       </CardContent>
     </Card>

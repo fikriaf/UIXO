@@ -44,7 +44,7 @@ const RotatingCoreWithOrbit: React.FC = () => {
       className="w-full h-screen flex items-center justify-start bg-transparent overflow-hidden pointer-events-none"
       style={{
         position: "absolute",
-        zIndex: 999,
+        zIndex: 0,
       }}
     >
 
