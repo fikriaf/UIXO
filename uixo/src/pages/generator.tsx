@@ -5,13 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
 import { Zap, Trash2, Sparkles } from "lucide-react";
 import { motion, AnimatePresence, easeOut } from "framer-motion";
 import LoadingOverlay from "../components/loading-overlay";
 import CodeOutput from "../components/code-output";
 import AbstractBackground from "../components/abstract-background";
 import { startStreaming } from "@/services/getStream";
+import CoolBg from "@/components/coolBG";
 
 // interface GenerateRequest {
 //   prompt: string;
@@ -128,6 +128,7 @@ export default function Generator() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
       <AbstractBackground />
+      <CoolBg />
       <LoadingOverlay
         isVisible={isLoading}
         message="Generating your component..."
@@ -221,9 +222,6 @@ export default function Generator() {
                   <SelectContent>
                     <SelectItem value="tsx">React TSX</SelectItem>
                     <SelectItem value="html">HTML</SelectItem>
-                    <SelectItem value="javascript">JavaScript</SelectItem>
-                    <SelectItem value="python">Python</SelectItem>
-                    <SelectItem value="css">CSS</SelectItem>
                   </SelectContent>
                 </Select>
               </motion.div>

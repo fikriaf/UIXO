@@ -61,9 +61,6 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
     const extensions: Record<string, string> = {
       tsx: 'tsx',
       html: 'html',
-      javascript: 'js',
-      python: 'py',
-      css: 'css'
     };
 
     const filename = `component.${extensions[language] || 'txt'}`;
@@ -233,7 +230,7 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
                 },
               }}
             >
-              {code}
+              {code || placeholder || `// Click "Generate" to see your component code here...`}
             </SyntaxHighlighter>
         </motion.div>
       </CardContent>

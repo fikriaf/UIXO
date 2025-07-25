@@ -22,8 +22,6 @@ onChunk: (chunk: string, language: string) => void
     let inCodeBlock = false;
     let language = "";
     let codeBuffer = "";
-    const isBacktickOnly = (str: string) =>
-    str.trim() === "```" || str.trimEnd().endsWith("\n```");
 
     while (true) {
         const { value, done } = await reader.read();

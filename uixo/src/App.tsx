@@ -10,12 +10,14 @@ import Home from "./pages/home";
 import Generator from "./pages/generator";
 import NotFound from "@/pages/not-found";
 import AssistantButton from "./components/AssistantButton";
+import Testing from "./components/Testing";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/generator" component={Generator} />
+      <Route path="/demo" component={Testing} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -28,7 +30,7 @@ function App() {
         <TooltipProvider>
           <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <AssistantButton />
-            <Navigation />
+            {/* <Navigation /> */}
             <Router />
             <Toaster />
             <Footer />

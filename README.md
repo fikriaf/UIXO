@@ -1,30 +1,67 @@
-# React + TypeScript + Vite
+<p align="center">
+  <h1 align="center">UIXO</h1>
+  <img src="https://your-image-url-here.com/logo.png" alt="UIXO Logo" width="200" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <a href="https://your-app-link.com">
+    <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="Build Status" />
+  </a>
+  <a href="https://your-app-link.com">
+    <img src="https://img.shields.io/badge/version-1.0.0-blue.svg" alt="Version" />
+  </a>
+  <a href="https://github.com/your-repo">
+    <img src="https://img.shields.io/github/stars/your-username/your-repo?style=social" alt="GitHub Stars" />
+  </a>
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <strong>Generate your next UI component in seconds</strong><br />
+  UIXO is an AI-powered application that transforms your component descriptions into production-ready code — supporting React TSX, HTML, JavaScript, CSS, and more.
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  <a href="https://your-app-link.com">
+    <strong>👉 Try Now</strong>
+  </a> • 
+  <a href="https://your-docs-link.com">
+    <strong>📖 Learn More</strong>
+  </a>
+</p>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## ⚡ Why Choose UIXO?
 
-- Configure the top-level `parserOptions` property like this:
+Turn ideas into code — faster and smarter.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### 🚀 Lightning Fast  
+Generate components in seconds, not hours. Focus on what matters.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 🌐 Multi-Language  
+Support for:
+- React TSX  
+- HTML  
+- JavaScript  
+- CSS  
+- ...and more.
+
+### ✅ Production Ready  
+Clean, optimized, and ready-to-use code for real-world projects.
+
+---
+
+## 🛠 Built with Cutting-edge Stack
+
+UIXO is crafted with a modern development stack for optimal speed and maintainability:
+
+- **React**
+- **TypeScript**
+- **Tailwind CSS**
+- **Vite**
+
+---
+
+<p align="center">
+  Start building smarter, not harder — with <strong>UIXO</strong>.
+</p>

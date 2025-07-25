@@ -57,6 +57,7 @@
 .color-gradient-uixo {
   background: linear-gradient(
     90deg,
+    var(--uixo-light),
     var(--uixo-primary),
     var(--uixo-secondary),
     var(--uixo-accent),
@@ -68,6 +69,60 @@
   -webkit-text-fill-color: transparent;
   animation: gradient-uixo-move 8s ease infinite;
 }
+
+.border-gradient-uixo {
+  position: relative;
+  border: 4px solid transparent;
+  border-radius: 1rem; /* optional */
+  background-image: 
+    linear-gradient(transparent, transparent), /* isi transparan */
+    linear-gradient(
+      45deg,
+      var(--uixo-primary),
+      var(--uixo-secondary),
+      var(--uixo-accent),
+      var(--uixo-hover),
+      var(--uixo-primary)
+    );
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  background-size: 300% 300%;
+  background-position: 0% 50%;
+  animation: border-glow 6s ease infinite;
+}
+
+@keyframes border-glow {
+  0% {
+    background-position: 0% 100%;
+  }
+  33% {
+    background-position: 100% 0%;
+  }
+  66% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+.animate-border-glow {
+  animation: border-glow 6s ease-in-out infinite;
+}
+
+.mask-border {
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  padding: 2px;
+}
+
+
 
 @keyframes shine {
   0% {

@@ -91,7 +91,7 @@ export default function Home() {
               className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
-              UIXO is an AI-powered application that transforms your component descriptions into production-ready code in React TSX, HTML, Python, JavaScript, and more.
+              UIXO is an AI-powered application that create production-ready code in React TSX, HTML, JavaScript, and more.
             </motion.p>
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
@@ -104,14 +104,14 @@ export default function Home() {
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
                   <Button 
-                    className="px-8 py-4 rounded-xl text-lg font-semibold transition-all shadow-lg hover:shadow-xl group"
+                    className="border-2 border-[--uixo-accent] px-8 py-7 rounded-lg text-lg font-semibold transition-all shadow-lg hover:shadow-xl group"
                     style={{ 
                       backgroundColor: 'hsl(195, 100%, 50%)',
                       color: 'hsl(225, 95%, 18%)'
                     }}
                   >
-                    Try Now
-                    <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                    Get Started
+                    {/* <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" /> */}
                   </Button>
                 </motion.div>
               </Link>
@@ -120,12 +120,14 @@ export default function Home() {
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <Button 
-                  variant="outline"
-                  className="border-2 text-dark hover:bg-white hover:text-[hsl(225,95%,18%)] px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
-                >
-                  Learn More
-                </Button>
+                <div className="relative rounded-md overflow-hidden group w-fit">
+  <div className="absolute inset-0 rounded-md bg-gradient-to-r from-[--uixo-primary] via-[--uixo-accent] to-[--uixo-hover] bg-[length:300%_300%] animate-border-glow mask-border z-0" />
+  
+  <button className="relative z-10 px-8 py-4 rounded-md text-white text-lg font-semibold bg-transparent border-none">
+    Browse Component
+  </button>
+</div>
+
               </motion.div>
             </motion.div>
           </div>
@@ -172,7 +174,7 @@ export default function Home() {
                 icon: Code,
                 color: 'hsl(207, 90%, 35%)',
                 title: 'Multi-Language',
-                description: 'Support for React TSX, HTML, Python, JavaScript, CSS, and more languages.',
+                description: 'Support for React TSX, HTML, JavaScript, CSS, and more languages.',
                 delay: 0.2
               },
               {
@@ -264,7 +266,7 @@ export default function Home() {
       {/* Contact Section */}
       <motion.section
         id="contact"
-        className="py-20 bg-white dark:bg-gray-950 transition-colors duration-300"
+        className="py-20 bg-white dark:bg-gray-950 rounded-t-[5rem] transition-colors duration-300"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
