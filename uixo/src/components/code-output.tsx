@@ -183,7 +183,7 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
       <CardContent className="md:px-6 px-3">
         <motion.div
           ref={outputRef}
-          className="rounded-lg p-0 h-[500px] overflow-auto code-output border"
+          className="rounded-lg p-0 h-[500px] text-[0.7rem] overflow-auto code-output border"
           style={{ 
             backgroundColor: 'hsl(225, 95%, 8%)',
             color: 'hsl(220, 13%, 91%)',
