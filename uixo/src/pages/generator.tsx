@@ -12,6 +12,7 @@ import CodeOutput from "../components/code-output";
 import AbstractBackground from "../components/abstract-background";
 import { startStreaming } from "@/services/getStream";
 import { LiveTSXRenderer } from "@/components/LiveTSXRenderer";
+import PreviewReady from "@/components/PreviewReady";
 // import CoolBg from "@/components/coolBG";
 
 // interface GenerateRequest {
@@ -338,7 +339,7 @@ export default function Generator() {
                             <div>{`Generating React component...`}</div>
                             <div>{`export default function `}<span className="animate-blink">|</span></div>
                             <div>{`return (`}</div>
-                            <div className="pl-4">{`<div>AI is writing JSX...</div>`}</div>
+                            <div className="pl-4">{`<div>AI is writing TSX...</div>`}</div>
                             <div>{`)`}</div>
                           </>
                         ) : (
@@ -358,9 +359,7 @@ export default function Generator() {
                   </div>
                 ) : (
                   <div className="w-full h-[100vh] transition-all duration-300">
-                    <div className="w-full h-full flex items-center justify-center bg-black text-green-400 font-mono text-sm">
-                      Preview is Ready, Lets Generate Components
-                    </div>
+                    <PreviewReady/>
                   </div>
                 )
               ) : language === "html" ? (
