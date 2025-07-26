@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoadingIntro from "@/components/LoadingPage";
 
 export function withPageLoader<T extends object>(WrappedComponent: React.ComponentType<T>) {
@@ -6,17 +6,13 @@ export function withPageLoader<T extends object>(WrappedComponent: React.Compone
     const [isPageReady, setIsPageReady] = useState(false);
 
     useEffect(() => {
-      const raf = requestAnimationFrame(() => {
-        // menunggu 1 frame render selesai
-        setTimeout(() => setIsPageReady(true), 100);
+      // Tunggu DOM benar-benar render dengan satu frame delay
+      const timeout = requestAnimationFrame(() => {
+        setIsPageReady(true);
       });
-      return () => cancelAnimationFrame(raf);
+      return () => cancelAnimationFrame(timeout);
     }, []);
 
-    if (!isPageReady) {
-      return <LoadingIntro />;
-    }
-
-    return <WrappedComponent {...props} />;
+    return isPageReady ? <WrappedComponent {...props} /> : <LoadingIntro />;
   };
 }

@@ -30,7 +30,7 @@ const socials = [
 ];
 
 return (
-    <footer className="bg-white dark:bg-gray-950 ">
+    <footer className="bg-white mt-auto dark:bg-gray-950 ">
     <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand Section */}

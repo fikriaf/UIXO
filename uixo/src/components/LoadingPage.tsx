@@ -17,7 +17,7 @@ const LoadingIntro = () => {
             }
             return prev + 10;
         });
-        }, 300);
+        }, 200);
 
         return () => {
         clearTimeout(timer);

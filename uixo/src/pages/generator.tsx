@@ -59,6 +59,12 @@ function extractFunctionBody(code: string): string {
 
 
 export default function Generator() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   const [prompt, setPrompt] = useState("");
   const [language, setLanguage] = useState("tsx");
   // const [generatedCode, setGeneratedCode] = useState("");
@@ -181,233 +187,238 @@ export default function Generator() {
   const [ reduceLag, setReduceLag ] = useState(false)
 
   return (
-    <>
-    <div className="fixed text-white font-semibold bottom-0 w-[90%] md:w-[29%] left-[50%] bg-[blue]/[0.3] translate-x-[-50%] flex justify-between rounded-t-[1rem] border-[1px] border-[--uixo-primary] items-center gap-2 py-2 px-4 backdrop-blur-sm" style={{zIndex: "9999999"}}>
-        <div className="flex gap-2 items-center">
-          Reduce Lag <Switch checked={reduceLag} onCheckedChange={setReduceLag} />
-        </div>
-        <button className="flex items-center gap-1 button border-[0.2rem] border-[--uixo-accent] px-3 py-1 rounded"
-        onClick={handleRefresh}
-        >
-          <RefreshCw size={20} />Refresh Iframe
-        </button>
-      </div>
-    <div className="min-h-screen min-h-[100vh] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
-      
-      { !reduceLag && (<AbstractBackground />)}
-      
-      {/* <CoolBg /> */}
-      <LoadingOverlay
-        isVisible={isLoading}
-        message="Generating your component..."
-      />
-      
-      <motion.div 
-        className="relative z-10 max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Header */}
-        <motion.div className="text-center mb-8" variants={itemVariants}>
-          <div className="flex items-center justify-center mb-4">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+    <div className="min-h-scren">
+      { ready && (
+        <>
+          <div className="fixed text-white font-semibold bottom-0 w-[90%] md:w-[29%] left-[50%] bg-[blue]/[0.3] translate-x-[-50%] flex justify-between rounded-t-[1rem] border-[1px] border-[--uixo-primary] items-center gap-2 py-2 px-4 backdrop-blur-sm" style={{zIndex: "9999999"}}>
+            <div className="flex gap-2 items-center">
+              Reduce Lag <Switch checked={reduceLag} onCheckedChange={setReduceLag} />
+            </div>
+            <button className="flex items-center gap-1 button border-[0.2rem] border-[--uixo-accent] px-3 py-1 rounded"
+            onClick={handleRefresh}
             >
-              <Sparkles className="w-8 h-8 text-[hsl(195,100%,50%)] mr-3" />
-            </motion.div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-              AI Component Generator
-            </h1>
+              <RefreshCw size={20} />Refresh Iframe
+            </button>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Describe your component and let AI generate production-ready code for you
-          </p>
-        </motion.div>
-
-        {/* Generator Interface - Made Much Wider */}
-        <div className="grid xl:grid-cols-5 lg:grid-cols-3 gap-8">
-          {/* Input Section - Smaller width */}
-          <motion.div className="xl:col-span-2 lg:col-span-1 w-full overflow-x-hidden" variants={itemVariants}>
-            <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
-                  <Zap className="w-5 h-5 mr-2 text-[hsl(195,100%,50%)]" />
-                  Describe Your Component
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-              {/* Input Textarea */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0 }}
-              >
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
+          
+          { !reduceLag && (<AbstractBackground />)}
+          
+          {/* <CoolBg /> */}
+          <LoadingOverlay
+            isVisible={isLoading}
+            message="Generating your component..."
+          />
+          
+          <motion.div 
+            className="relative z-10 max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {/* Header */}
+            <motion.div className="text-center mb-8" variants={itemVariants}>
+              <div className="flex items-center justify-center mb-4">
                 <motion.div
-                  whileFocus={{ scale: 1.01 }}
-                  transition={{  ease: "easeInOut" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                 >
-                  <Textarea
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    className="min-h-[200px] transition-all duration-100 w-full resize-none focus-visible:ring-none
-                                focus:outline-none focus:ring-0 focus:ring-transparent
-                                placeholder:font-normal placeholder:not-italic
-                                border-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                                placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                    placeholder="Buatkan form login dengan email dan password, gunakan styling modern dengan border radius dan shadow..."
-                  />
+                  <Sparkles className="w-8 h-8 text-[hsl(195,100%,50%)] mr-3" />
                 </motion.div>
-                <AnimatePresence>
-                  {error && (
-                    <motion.p 
-                      className="text-red-500 text-sm mt-2"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                  AI Component Generator
+                </h1>
+              </div>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                Describe your component and let AI generate production-ready code for you
+              </p>
+            </motion.div>
 
-              {/* Language Selection */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Output Language
-                </label>
-                <Select value={language} onValueChange={setLanguage}>
-                  <SelectTrigger className="w-full transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-[hsl(195,100%,50%)] focus:border-[hsl(195,100%,50%)] bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-200 dark:border-gray-600">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="tsx">React TSX</SelectItem>
-                    <SelectItem value="html">HTML</SelectItem>
-                  </SelectContent>
-                </Select>
-              </motion.div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <motion.div 
-                  className="flex-1"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button
-                    onClick={() => streamMutation.mutate(prompt)}
-                    disabled={isLoading}
-                    className="w-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl group bg-[hsl(225,95%,18%)] dark:bg-[hsl(195,100%,50%)] dark:text-[hsl(225,95%,18%)] hover:bg-[hsl(217,95%,30%)] dark:hover:bg-[hsl(195,100%,60%)]"
+            {/* Generator Interface - Made Much Wider */}
+            <div className="grid xl:grid-cols-5 lg:grid-cols-3 gap-8">
+              {/* Input Section - Smaller width */}
+              <motion.div className="xl:col-span-2 lg:col-span-1 w-full overflow-x-hidden" variants={itemVariants}>
+                <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
+                      <Zap className="w-5 h-5 mr-2 text-[hsl(195,100%,50%)]" />
+                      Describe Your Component
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                  {/* Input Textarea */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0 }}
                   >
                     <motion.div
-                      animate={isLoading ? { rotate: 360 } : {}}
-                      transition={{ duration: 1, repeat: isLoading ? Infinity : 0, ease: "linear" }}
+                      whileFocus={{ scale: 1.01 }}
+                      transition={{  ease: "easeInOut" }}
                     >
-                      <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                      <Textarea
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        className="min-h-[200px] transition-all duration-100 w-full resize-none focus-visible:ring-none
+                                    focus:outline-none focus:ring-0 focus:ring-transparent
+                                    placeholder:font-normal placeholder:not-italic
+                                    border-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                                    placeholder:text-gray-500 dark:placeholder:text-gray-400"
+                        placeholder="Buatkan form login dengan email dan password, gunakan styling modern dengan border radius dan shadow..."
+                      />
                     </motion.div>
-                    {isLoading ? "Generating..." : "Generate"}
-                  </Button>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button
-                    onClick={handleClear}
-                    variant="outline"
-                    className="px-6 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Clear
-                  </Button>
-                </motion.div>
-              </div>
-            </CardContent>
-            </Card>
-          </motion.div>
+                    <AnimatePresence>
+                      {error && (
+                        <motion.p 
+                          className="text-red-500 text-sm mt-2"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {error}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
 
-          {/* Output Section - Wider width */}
-          <motion.div className="xl:col-span-3 lg:col-span-2 w-full overflow-x-hidden" variants={itemVariants}>
-            <CodeOutput 
-              code={streamedOutput}
-              language={language}
-              IsReduce={reduceLag}
-              placeholder="// Click 'Generate' to see your component code here..."
-            />
+                  {/* Language Selection */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Output Language
+                    </label>
+                    <Select value={language} onValueChange={setLanguage}>
+                      <SelectTrigger className="w-full transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-[hsl(195,100%,50%)] focus:border-[hsl(195,100%,50%)] bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-200 dark:border-gray-600">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="tsx">React TSX</SelectItem>
+                        <SelectItem value="html">HTML</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3">
+                    <motion.div 
+                      className="flex-1"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Button
+                        onClick={() => streamMutation.mutate(prompt)}
+                        disabled={isLoading}
+                        className="w-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl group bg-[hsl(225,95%,18%)] dark:bg-[hsl(195,100%,50%)] dark:text-[hsl(225,95%,18%)] hover:bg-[hsl(217,95%,30%)] dark:hover:bg-[hsl(195,100%,60%)]"
+                      >
+                        <motion.div
+                          animate={isLoading ? { rotate: 360 } : {}}
+                          transition={{ duration: 1, repeat: isLoading ? Infinity : 0, ease: "linear" }}
+                        >
+                          <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                        </motion.div>
+                        {isLoading ? "Generating..." : "Generate"}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        onClick={handleClear}
+                        variant="outline"
+                        className="px-6 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Clear
+                      </Button>
+                    </motion.div>
+                  </div>
+                </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Output Section - Wider width */}
+              <motion.div className="xl:col-span-3 lg:col-span-2 w-full overflow-x-hidden" variants={itemVariants}>
+                <CodeOutput 
+                  code={streamedOutput}
+                  language={language}
+                  IsReduce={reduceLag}
+                  placeholder="// Click 'Generate' to see your component code here..."
+                />
+              </motion.div>
+            </div>
+
+            {/* Live Preview */}
+              <div className="mt-8 w-full">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                      Live Preview
+                    </h2>
+                  </div>
+                </div>
+                <div className="w-full border rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-md animated-bg p-1">
+                  {streamMutation.isPending || streamedOutput.length === 0 ? (
+                    loadingPreview ? (
+                      // Loader saat masih kosong atau sedang loading
+                      <div className="w-full h-[100vh] transition-all duration-300">
+                        <div className="w-full h-full flex items-center justify-center bg-gray-900 text-green-400 font-mono text-sm">
+                          <div className="space-y-1 animate-pulse">
+                            {language === "tsx" ? (
+                              // Loader untuk TSX/React
+                              <>
+                                <div>{`Generating React component...`}</div>
+                                <div>{`export default function `}<span className="animate-blink">|</span></div>
+                                <div>{`return (`}</div>
+                                <div className="pl-4">{`<div>AI is writing TSX...</div>`}</div>
+                                <div>{`)`}</div>
+                              </>
+                            ) : (
+                              // Loader untuk HTML
+                              <>
+                                <div>{`Generating HTML...`}</div>
+                                <div>{`<!DOCTYPE html>`}</div>
+                                <div>{`<html>`}</div>
+                                <div className="pl-4">{`<body>`}</div>
+                                <div className="pl-8">{`<!-- AI writing HTML... -->`}</div>
+                                <div className="pl-4">{`</body>`}</div>
+                                <div>{`</html>`}</div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full h-[100vh] transition-all duration-300">
+                        <PreviewReady/>
+                      </div>
+                    )
+                  ) : language === "html" ? (
+                    <div className="bg-gray-900 rounded">
+                      <iframe
+                        title="Live Preview"
+                        sandbox="allow-scripts allow-same-origin"
+                        className="w-full h-[100vh] transition-all rounded duration-300"
+                        srcDoc={streamedOutput}
+                      />
+                    </div>
+                  ) : isStreamingDone && (
+                    <div className="w-full h-[100vh] transition-all rounded duration-300 bg-gray-900">
+                      <LiveTSXRenderer code={extractFunctionBody(streamedOutput)} />
+                    </div>
+                  )}
+                </div>
+              </div>
           </motion.div>
         </div>
-
-        {/* Live Preview */}
-          <div className="mt-8 w-full">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                  Live Preview
-                </h2>
-              </div>
-            </div>
-            <div className="w-full border rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-md animated-bg p-1">
-              {streamMutation.isPending || streamedOutput.length === 0 ? (
-                loadingPreview ? (
-                  // Loader saat masih kosong atau sedang loading
-                  <div className="w-full h-[100vh] transition-all duration-300">
-                    <div className="w-full h-full flex items-center justify-center bg-gray-900 text-green-400 font-mono text-sm">
-                      <div className="space-y-1 animate-pulse">
-                        {language === "tsx" ? (
-                          // Loader untuk TSX/React
-                          <>
-                            <div>{`Generating React component...`}</div>
-                            <div>{`export default function `}<span className="animate-blink">|</span></div>
-                            <div>{`return (`}</div>
-                            <div className="pl-4">{`<div>AI is writing TSX...</div>`}</div>
-                            <div>{`)`}</div>
-                          </>
-                        ) : (
-                          // Loader untuk HTML
-                          <>
-                            <div>{`Generating HTML...`}</div>
-                            <div>{`<!DOCTYPE html>`}</div>
-                            <div>{`<html>`}</div>
-                            <div className="pl-4">{`<body>`}</div>
-                            <div className="pl-8">{`<!-- AI writing HTML... -->`}</div>
-                            <div className="pl-4">{`</body>`}</div>
-                            <div>{`</html>`}</div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-full h-[100vh] transition-all duration-300">
-                    <PreviewReady/>
-                  </div>
-                )
-              ) : language === "html" ? (
-                <div className="bg-gray-900 rounded">
-                  <iframe
-                    title="Live Preview"
-                    sandbox="allow-scripts allow-same-origin"
-                    className="w-full h-[100vh] transition-all rounded duration-300"
-                    srcDoc={streamedOutput}
-                  />
-                </div>
-              ) : isStreamingDone && (
-                <div className="w-full h-[100vh] transition-all rounded duration-300 bg-gray-900">
-                  <LiveTSXRenderer code={extractFunctionBody(streamedOutput)} />
-                </div>
-              )}
-            </div>
-          </div>
-      </motion.div>
+        </>
+      )}
+      
     </div>
-    </>
   );
 }
