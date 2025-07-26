@@ -8,7 +8,7 @@ const LoadingIntro = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
         setLoading(false);
-        }, 3000);
+        }, 10000);
 
         const progressTimer = setInterval(() => {
         setProgress(prev => { if (prev >=100) {
@@ -17,7 +17,7 @@ const LoadingIntro = () => {
             }
             return prev + 10;
         });
-        }, 200);
+        }, 400);
 
         return () => {
         clearTimeout(timer);
