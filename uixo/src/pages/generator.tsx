@@ -11,6 +11,7 @@ import LoadingOverlay from "../components/loading-overlay";
 import CodeOutput from "../components/code-output";
 import AbstractBackground from "../components/abstract-background";
 import { startStreaming } from "@/services/getStream";
+import { LiveTSXRenderer } from "@/components/LiveTSXRenderer";
 // import CoolBg from "@/components/coolBG";
 
 // interface GenerateRequest {
@@ -31,6 +32,30 @@ function generateRandomHash(length = 12) {
   return result;
 }
 
+function extractFunctionBody(code: string): string {
+  const lines = code.split('\n');
+
+  // Buang semua baris import di paling atas, termasuk baris kosong
+  let i = 0;
+  while (
+    i < lines.length &&
+    (lines[i].trim() === '' || lines[i].trim().startsWith('import'))
+  ) {
+    i++;
+  }
+
+  const cleanedLines = lines.slice(i)
+    .map(line => line.replace(/\bexport\s+default\b\s*/g, '')) // Hapus export default
+    .filter(line => line.trim() !== '' && line.trim() !== ';' && !/^[A-Za-z0-9_$]+\s*;$/.test(line.trim())); // Hapus baris kosong dan sisa ekspresi export
+
+  const result = cleanedLines.join('\n').trim();
+  // console.log(result);
+  return result;
+}
+
+
+
+
 export default function Generator() {
   const [prompt, setPrompt] = useState("");
   const [language, setLanguage] = useState("tsx");
@@ -39,6 +64,9 @@ export default function Generator() {
   const { toast } = useToast();
   const [streamedOutput, setStreamedOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [ loadingPreview, setLoadingPreview ] = useState(false);
+  const [isStreamingDone, setIsStreamingDone] = useState(false);
+
 
   const [ hash, setHash ] = useState("");
   useEffect(() => {
@@ -52,7 +80,13 @@ export default function Generator() {
       setStreamedOutput("");
 
       const hashnya = generateRandomHash();
-      console.log(hashnya)
+      
+      let finalPrompt;
+      if (language === "tsx") {
+        finalPrompt = `${prompt}. HARUS pakai bahasa ${language}. Tanpa framer-motion.`
+      } else {
+        finalPrompt = `${prompt}. HARUS pakai bahasa ${language}.`
+      }
 
       // Step 1: POST
       const res = await fetch("https://qwen-qwen3-coder-webdev.hf.space/gradio_api/queue/join?__theme=system", {
@@ -65,7 +99,7 @@ export default function Generator() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          data: [`${prompt}. HARUS pakai bahasa ${language}.`, '', null],
+          data: [finalPrompt, '', null],
           event_data: null,
           fn_index: 19,
           trigger_id: 18,
@@ -75,13 +109,19 @@ export default function Generator() {
 
       if (!res.ok) throw new Error("POST failed");
 
+      setLoadingPreview(true);
+
       await startStreaming(hashnya, (chunk, language) => {
         setIsLoading(false);
         setLanguage(language)
         setStreamedOutput((prev) => prev + chunk);
+      }, () => {
+        setIsStreamingDone(true);
       });
     },
     onError: () => {
+      setIsLoading(false);
+      setLoadingPreview(false)
       toast({
         title: "Error",
         description: "Failed to stream code. Please try again.",
@@ -89,6 +129,8 @@ export default function Generator() {
       });
     },
     onSuccess: () => {
+      console.log(streamedOutput)
+      setLoadingPreview(false)
       toast({
         title: "Done!",
         description: "Streaming finished.",
@@ -274,6 +316,67 @@ export default function Generator() {
             />
           </motion.div>
         </div>
+
+        {/* Live Preview */}
+          <div className="mt-8 w-full">
+            <div className="flex items-center gap-2 mb-2">
+            <div className="w-3 h-3 rounded-full bg-red-500" />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                Live Preview
+              </h2>
+            </div>
+            <div className="w-full border rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-md animated-bg p-1">
+              {streamMutation.isPending || streamedOutput.length === 0 ? (
+                loadingPreview ? (
+                  // Loader saat masih kosong atau sedang loading
+                  <div className="w-full h-[100vh] transition-all duration-300">
+                    <div className="w-full h-full flex items-center justify-center bg-black text-green-400 font-mono text-sm">
+                      <div className="space-y-1 animate-pulse">
+                        {language === "tsx" ? (
+                          // Loader untuk TSX/React
+                          <>
+                            <div>{`Generating React component...`}</div>
+                            <div>{`export default function `}<span className="animate-blink">|</span></div>
+                            <div>{`return (`}</div>
+                            <div className="pl-4">{`<div>AI is writing JSX...</div>`}</div>
+                            <div>{`)`}</div>
+                          </>
+                        ) : (
+                          // Loader untuk HTML
+                          <>
+                            <div>{`Generating HTML...`}</div>
+                            <div>{`<!DOCTYPE html>`}</div>
+                            <div>{`<html>`}</div>
+                            <div className="pl-4">{`<body>`}</div>
+                            <div className="pl-8">{`<!-- AI writing HTML... -->`}</div>
+                            <div className="pl-4">{`</body>`}</div>
+                            <div>{`</html>`}</div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-[100vh] transition-all duration-300">
+                    <div className="w-full h-full flex items-center justify-center bg-black text-green-400 font-mono text-sm">
+                      Preview is Ready, Lets Generate Components
+                    </div>
+                  </div>
+                )
+              ) : language === "html" ? (
+                <iframe
+                  title="Live Preview"
+                  sandbox="allow-scripts allow-same-origin"
+                  className="w-full h-[100vh] transition-all duration-300"
+                  srcDoc={streamedOutput}
+                />
+              ) : isStreamingDone && (
+                <div className="w-full h-[100vh] transition-all duration-300">
+                  <LiveTSXRenderer code={extractFunctionBody(streamedOutput)} />
+                </div>
+              )}
+            </div>
+          </div>
       </motion.div>
     </div>
   );

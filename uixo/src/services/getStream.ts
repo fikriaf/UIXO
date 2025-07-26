@@ -1,6 +1,7 @@
 export async function startStreaming(
 session_hash: string,
-onChunk: (chunk: string, language: string) => void
+onChunk: (chunk: string, language: string) => void,
+onFinish: () => void
 ): Promise<void> {
     const url = `https://qwen-qwen3-coder-webdev.hf.space/gradio_api/queue/data?session_hash=${session_hash}`;
 
@@ -25,7 +26,10 @@ onChunk: (chunk: string, language: string) => void
 
     while (true) {
         const { value, done } = await reader.read();
-        if (done) return;
+        if (done) {
+            if (onFinish) onFinish();
+            return;
+        };
 
         buffer += decoder.decode(value, { stream: true });
 
@@ -89,11 +93,25 @@ onChunk: (chunk: string, language: string) => void
                                         continue;
                                     }
 
-                                    if (finalValue.trim() === "```" || finalValue.includes("```")) {
+                                    if (finalValue.includes("```")) {
+                                        const parts = finalValue.split("```");
+
+                                        // Jika ada kode sebelum atau sesudah ``` di baris yang sama
+                                        if (parts[0].trim()) {
+                                            codeBuffer += parts[0];
+                                            onChunk(parts[0], language);
+                                        }
+
                                         inCodeBlock = false;
                                         onChunk("", language);
                                         codeBuffer = "";
                                         language = "";
+
+                                        // Jika ada konten setelah ```
+                                        if (parts[1]?.trim()) {
+                                            onChunk(parts[1], ""); // asumsikan di luar blok kode
+                                        }
+
                                         continue;
                                     }
 
@@ -101,7 +119,6 @@ onChunk: (chunk: string, language: string) => void
                                     if (finalValue.trim()) {
                                         onChunk(finalValue, language);
                                     }
-                                    console.log(finalValue)
                                 }
                             }
                         }

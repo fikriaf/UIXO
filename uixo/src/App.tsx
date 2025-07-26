@@ -11,7 +11,7 @@ import Generator from "./pages/generator";
 import NotFound from "@/pages/not-found";
 import AssistantButton from "./components/AssistantButton";
 import Testing from "./components/Testing";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 
 function Router() {
   return (

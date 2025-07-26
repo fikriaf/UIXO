@@ -122,6 +122,23 @@
   padding: 2px;
 }
 
+@keyframes rotateBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-bg {
+  background: linear-gradient(-45deg, #00f, rgb(255, 0, 0), rgb(0, 255, 21));
+  background-size: 600% 600%;
+  animation: rotateBackground 1s ease infinite;
+}
 
 
 @keyframes shine {
