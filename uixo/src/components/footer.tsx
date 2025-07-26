@@ -2,28 +2,32 @@ import { FaGithub, FaLinkedinIn, FaInstagram, FaWhatsapp } from "react-icons/fa"
 
 const Footer = () => {
 
-    const socials = [
-    {
-        name: "Github",
-        url: "https://github.com/fikriaf",
-        icon: <FaGithub className="w-5 h-5" />,
-    },
-    {
-        name: "LinkedIn",
-        url: "https://www.linkedin.com/in/fikri-armia-fahmi-b373b3288",
-        icon: <FaLinkedinIn className="w-5 h-5" />,
-    },
-    {
-        name: "Instagram",
-        url: "https://instagram.com/fikriaf27",
-        icon: <FaInstagram className="w-5 h-5" />,
-    },
-    {
-        name: "whatsapp",
-        url: "https://wa.me/62895348505284",
-        icon: <FaWhatsapp className="w-5 h-5" />,
-    },
-    ];
+const socials = [
+  {
+    name: "Github",
+    url: "https://github.com/fikriaf",
+    icon: <FaGithub className="w-5 h-5 text-[#000]" />, // GitHub: abu gelap
+    color: "#333",
+  },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/fikri-armia-fahmi-b373b3288",
+    icon: <FaLinkedinIn className="w-5 h-5 text-[#0A66C2]" />, // LinkedIn: biru
+    color: "#0A66C2",
+  },
+  {
+    name: "Instagram",
+    url: "https://instagram.com/fikriaf27",
+    icon: <FaInstagram className="w-5 h-5 text-[#E1306C]" />, // Instagram: pink/merah
+    color: "#E1306C",
+  },
+  {
+    name: "Whatsapp",
+    url: "https://wa.me/62895348505284",
+    icon: <FaWhatsapp className="w-5 h-5 text-[#25D366]" />, // WhatsApp: hijau
+    color: "#25D366",
+  },
+];
 
 return (
     <footer className="bg-white dark:bg-gray-950 ">
@@ -43,18 +47,23 @@ return (
             Membawa visi digital Anda menjadi kenyataan dengan solusi inovatif dan desain yang menakjubkan. Kami berkomitmen untuk memberikan pengalaman terbaik bagi pengguna Anda.
             </p>
             <div className="flex space-x-4">
-            {socials.map((social) => (
-                <a
-                key={social.name}
-                href={social.url}
-                className="bg-gray-800 hover:bg-gray-700 transition-colors duration-300 p-2 rounded-full"
-                aria-label={social.name}
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                {social.icon}
-                </a>
-            ))}
+                {socials.map((social) => (
+                    <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center bg-gray-800 hover:bg-gray-700 transition-all duration-500 rounded-full px-2 py-2"
+                    aria-label={social.name}
+                    >
+                    {social.icon}
+                    <span
+                        className="ml-0 group-hover:ml-2 max-w-0 group-hover:max-w-[200px] overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 text-white text-sm font-medium whitespace-nowrap"
+                    >
+                        {social.name}
+                    </span>
+                    </a>
+                ))}
             </div>
         </div>
 
