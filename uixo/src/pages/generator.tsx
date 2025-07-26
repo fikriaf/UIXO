@@ -330,7 +330,7 @@ export default function Generator() {
                 loadingPreview ? (
                   // Loader saat masih kosong atau sedang loading
                   <div className="w-full h-[100vh] transition-all duration-300">
-                    <div className="w-full h-full flex items-center justify-center bg-black text-green-400 font-mono text-sm">
+                    <div className="w-full h-full flex items-center justify-center bg-gray-900 text-green-400 font-mono text-sm">
                       <div className="space-y-1 animate-pulse">
                         {language === "tsx" ? (
                           // Loader untuk TSX/React
@@ -364,14 +364,16 @@ export default function Generator() {
                   </div>
                 )
               ) : language === "html" ? (
-                <iframe
-                  title="Live Preview"
-                  sandbox="allow-scripts allow-same-origin"
-                  className="w-full h-[100vh] transition-all duration-300"
-                  srcDoc={streamedOutput}
-                />
+                <div className="bg-gray-900 rounded">
+                  <iframe
+                    title="Live Preview"
+                    sandbox="allow-scripts allow-same-origin"
+                    className="w-full h-[100vh] transition-all rounded duration-300"
+                    srcDoc={streamedOutput}
+                  />
+                </div>
               ) : isStreamingDone && (
-                <div className="w-full h-[100vh] transition-all duration-300">
+                <div className="w-full h-[100vh] transition-all rounded duration-300 bg-gray-900">
                   <LiveTSXRenderer code={extractFunctionBody(streamedOutput)} />
                 </div>
               )}

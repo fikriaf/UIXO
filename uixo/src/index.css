@@ -135,7 +135,7 @@
 }
 
 .animated-bg {
-  background: linear-gradient(-45deg, #00f, rgb(255, 0, 0), rgb(0, 255, 21));
+  background: linear-gradient(-45deg, #00f, rgb(255, 0, 0));
   background-size: 600% 600%;
   animation: rotateBackground 1s ease infinite;
 }
