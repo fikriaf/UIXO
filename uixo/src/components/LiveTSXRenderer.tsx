@@ -117,7 +117,7 @@ export const LiveTSXRenderer: React.FC<Props> = ({ code }) => {
     }, [code]);
 
     return (
-        <div className="live-preview w-full h-full">
+        <div className="live-preview w-full h-full overflow-auto">
         <Component />
         </div>
     );
