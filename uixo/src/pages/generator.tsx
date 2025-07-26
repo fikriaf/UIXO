@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, Trash2, Sparkles } from "lucide-react";
+import { Zap, Trash2, Sparkles, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence, easeOut } from "framer-motion";
 import LoadingOverlay from "../components/loading-overlay";
 import CodeOutput from "../components/code-output";
@@ -13,6 +13,7 @@ import AbstractBackground from "../components/abstract-background";
 import { startStreaming } from "@/services/getStream";
 import { LiveTSXRenderer } from "@/components/LiveTSXRenderer";
 import PreviewReady from "@/components/PreviewReady";
+import Switch from "@/components/Switch";
 // import CoolBg from "@/components/coolBG";
 
 // interface GenerateRequest {
@@ -67,6 +68,7 @@ export default function Generator() {
   const [isLoading, setIsLoading] = useState(false);
   const [ loadingPreview, setLoadingPreview ] = useState(false);
   const [isStreamingDone, setIsStreamingDone] = useState(false);
+  const originalOutputRef = useRef(streamedOutput);
 
 
   const [ hash, setHash ] = useState("");
@@ -168,9 +170,32 @@ export default function Generator() {
     }
   };
 
+  const handleRefresh = () => {
+    originalOutputRef.current = streamedOutput;
+    setStreamedOutput("");
+    setTimeout(() => {
+      setStreamedOutput(originalOutputRef.current);
+    }, 50);
+  };
+
+  const [ reduceLag, setReduceLag ] = useState(false)
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
-      <AbstractBackground />
+    <>
+    <div className="fixed text-white font-semibold bottom-0 w-[90%] md:w-[29%] left-[50%] bg-[blue]/[0.3] translate-x-[-50%] flex justify-between rounded-t-[1rem] border-[1px] border-[--uixo-primary] items-center gap-2 py-2 px-4 backdrop-blur-sm" style={{zIndex: "9999999"}}>
+        <div className="flex gap-2 items-center">
+          Reduce Lag <Switch checked={reduceLag} onCheckedChange={setReduceLag} />
+        </div>
+        <button className="flex items-center gap-1 button border-[0.2rem] border-[--uixo-accent] px-3 py-1 rounded"
+        onClick={handleRefresh}
+        >
+          <RefreshCw size={20} />Refresh Iframe
+        </button>
+      </div>
+    <div className="min-h-screen min-h-[100vh] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative transition-colors duration-300">
+      
+      { !reduceLag && (<AbstractBackground />)}
+      
       {/* <CoolBg /> */}
       <LoadingOverlay
         isVisible={isLoading}
@@ -226,10 +251,10 @@ export default function Generator() {
                   <Textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    className="min-h-[200px] transition-all duration-100 w-full resize-none
+                    className="min-h-[200px] transition-all duration-100 w-full resize-none focus-visible:ring-none
                                 focus:outline-none focus:ring-0 focus:ring-transparent
                                 placeholder:font-normal placeholder:not-italic
-                                border-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                                border-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                                 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                     placeholder="Buatkan form login dengan email dan password, gunakan styling modern dengan border radius dan shadow..."
                   />
@@ -313,6 +338,7 @@ export default function Generator() {
             <CodeOutput 
               code={streamedOutput}
               language={language}
+              IsReduce={reduceLag}
               placeholder="// Click 'Generate' to see your component code here..."
             />
           </motion.div>
@@ -320,11 +346,13 @@ export default function Generator() {
 
         {/* Live Preview */}
           <div className="mt-8 w-full">
-            <div className="flex items-center gap-2 mb-2">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                Live Preview
-              </h2>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  Live Preview
+                </h2>
+              </div>
             </div>
             <div className="w-full border rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-md animated-bg p-1">
               {streamMutation.isPending || streamedOutput.length === 0 ? (
@@ -380,5 +408,6 @@ export default function Generator() {
           </div>
       </motion.div>
     </div>
+    </>
   );
 }

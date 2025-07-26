@@ -6,12 +6,19 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "./components/theme-provider";
 import Navigation from "@/components/navigation";
 import Footer from "./components/footer";
-import Home from "./pages/home";
-import Generator from "./pages/generator";
-import NotFound from "@/pages/not-found";
 import AssistantButton from "./components/AssistantButton";
-import Testing from "./components/Testing";
 import { Analytics } from "@vercel/analytics/react"
+import LoadingIntro from "./components/LoadingPage";
+
+
+import { lazy, Suspense } from "react";
+import { withPageLoader } from "./components/WithPageLoader";
+
+// Pakai lazy + loader wrapper
+const Home = withPageLoader(lazy(() => import("./pages/home")));
+const Generator = withPageLoader(lazy(() => import("./pages/generator")));
+const Testing = withPageLoader(lazy(() => import("./components/Testing")));
+const NotFound = withPageLoader(lazy(() => import("@/pages/not-found")));
 
 function Router() {
   return (
@@ -33,7 +40,9 @@ function App() {
             <Analytics />
             <AssistantButton />
             <Navigation />
-            <Router />
+            <Suspense fallback={<LoadingIntro />}>
+              <Router />
+            </Suspense>
             <Toaster />
             <Footer />
           </div>

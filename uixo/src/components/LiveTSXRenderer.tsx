@@ -1,16 +1,11 @@
 import * as Babel from "@babel/standalone";
 import React, {
-  useState, useEffect, useRef, useMemo, useCallback,
-  useContext, useReducer, useLayoutEffect,
-  useImperativeHandle, useId, useTransition,
-  useDeferredValue, useSyncExternalStore
+    useState, useEffect, useRef, useMemo, useCallback,
+    useContext, useReducer, useLayoutEffect,
+    useImperativeHandle, useId, useTransition,
+    useDeferredValue, useSyncExternalStore
 } from "react";
-import * as motionLib from "framer-motion";
-import * as RadixIcons from "react-icons";
 import * as LucideIcons from "lucide-react";
-import * as HeroIcons from "@heroicons/react/24/outline";
-import * as MaterialIcons from "react-icons/md";
-import * as TailwindElements from "tw-elements";
 
 type Props = {
   code: string; // hanya isi function component
@@ -55,8 +50,6 @@ export const LiveTSXRenderer: React.FC<Props> = ({ code }) => {
                 `;
             }
 
-            const { motion, AnimatePresence } = motionLib;
-
             const transpiled = Babel.transform(wrappedCode, {
             presets: ["typescript", "react"],
             filename: "file.tsx",
@@ -67,10 +60,7 @@ export const LiveTSXRenderer: React.FC<Props> = ({ code }) => {
             }
 
             const iconMap = {
-            ...LucideIcons,
-            ...HeroIcons,
-            ...MaterialIcons,
-            ...RadixIcons,
+            ...LucideIcons
             };
             
 
@@ -86,7 +76,7 @@ export const LiveTSXRenderer: React.FC<Props> = ({ code }) => {
 
 
             const fn = new Function(
-            "React", "motionLib", "RadixIcons", "LucideIcons", "HeroIcons", "MaterialIcons", "TailwindElements", "module", "exports",
+            "React", "LucideIcons", "module", "exports",
             `
                 const {
                 useState, useEffect, useRef, useMemo, useCallback,
@@ -95,13 +85,8 @@ export const LiveTSXRenderer: React.FC<Props> = ({ code }) => {
                 useDeferredValue, useSyncExternalStore
                 } = React;
 
-                const { motion, AnimatePresence } = motionLib;
-
                 const iconMap = {
-                ...LucideIcons,
-                ...HeroIcons,
-                ...MaterialIcons,
-                ...RadixIcons,
+                ...LucideIcons
                 };
 
                 ${iconDeclarations}
@@ -116,12 +101,7 @@ export const LiveTSXRenderer: React.FC<Props> = ({ code }) => {
 
             const RenderedComponent = fn(
             React,
-            { motion, AnimatePresence },
-            RadixIcons,
             LucideIcons,
-            HeroIcons,
-            MaterialIcons,
-            TailwindElements,
             module,
             exports,
             );

@@ -10,10 +10,11 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 interface CodeOutputProps {
   code: string;
   language: string;
+  IsReduce: boolean;
   placeholder?: string;
 }
 
-export default function CodeOutput({ code, language, placeholder }: CodeOutputProps) {
+export default function CodeOutput({ code, language, placeholder, IsReduce }: CodeOutputProps) {
 
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -209,29 +210,42 @@ export default function CodeOutput({ code, language, placeholder }: CodeOutputPr
                 {code || placeholder || `// Click "Generate" to see your component code here...`}
               </motion.code>
             </AnimatePresence> */}
-            <SyntaxHighlighter
-              language={language}
-              style={oneDark}
-              showLineNumbers
-              wrapLines={false}
-              wrapLongLines={false}
-              customStyle={{
-                background: "transparent",
-                margin: 0,
-                padding: 0,
-                overflow: "visible",
-              }}
-              codeTagProps={{
-                style: {
-                  display: "inline-block",
-                  minWidth: "100%",
-                  whiteSpace: "pre",
+            {IsReduce ? (
+              <pre
+                className="px-3"
+                style={{
+                  fontFamily: "monospace",
+                  background: "transparent",
+                  margin: 0,
+                }}
+              >
+                {code || placeholder || `// Click "Generate" to see your component code here...`}
+              </pre>
+            ) : (
+              <SyntaxHighlighter
+                language={language}
+                style={oneDark}
+                showLineNumbers
+                wrapLines={false}
+                wrapLongLines={false}
+                customStyle={{
+                  background: "transparent",
+                  margin: 0,
+                  padding: 0,
                   overflow: "visible",
-                },
-              }}
-            >
-              {code || placeholder || `// Click "Generate" to see your component code here...`}
-            </SyntaxHighlighter>
+                }}
+                codeTagProps={{
+                  style: {
+                    display: "inline-block",
+                    minWidth: "100%",
+                    whiteSpace: "pre",
+                    overflow: "visible",
+                  },
+                }}
+              >
+                {code || placeholder || `// Click "Generate" to see your component code here...`}
+              </SyntaxHighlighter>
+            )}
         </motion.div>
       </CardContent>
     </Card>

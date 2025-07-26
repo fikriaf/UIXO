@@ -12,7 +12,7 @@ return (
     <motion.button
         onClick={() => setOpen(true)}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 overflow-hidden right-6 z-50 bg-[hsl(195,100%,50%)] hover:bg-[hsl(195,100%,45%)] hover:w-48 w-16 h-16 p-4 rounded-full shadow-xl transition-all duration-300"
+        className="fixed bottom-16 overflow-hidden right-6 z-50 bg-[hsl(195,100%,50%)] hover:bg-[hsl(195,100%,45%)] hover:w-48 w-16 h-16 p-4 rounded-full shadow-xl transition-all duration-300"
         aria-label="Assistant"
     >
         <div className="absolute flex gap-3 top-3 left-3 font-semibold">
